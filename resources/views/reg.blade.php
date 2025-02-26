@@ -6,7 +6,7 @@
 <script>alert("{{$message}}");</script>
 @enderror
 
-@error('login')
+@error('drive_licence')
 <div class="alert alert-danger">{{ $message }}</div>
 @enderror
 
@@ -27,15 +27,15 @@
 @enderror
 
 <div class="vh2"></div>
-<div class="container-fluid">
+<div class="container">
     <h3>Регистрация</h3>
 </div>
 <div class="vh2"></div>
-<div class="container-fluid">
+<div class="container">
 <form action="{{route('reg')}}" method="POST">
 @csrf
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Логин</label>
+    <label for="exampleInputEmail1" class="form-label">Серия и номер водительского удостоверения</label>
     <input type="text" class="form-control" id="exampleInputEmail1" name="login">
   </div>
   <div class="mb-3">
