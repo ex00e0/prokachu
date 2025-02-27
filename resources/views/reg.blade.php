@@ -36,7 +36,7 @@
 @csrf
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Серия и номер водительского удостоверения</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" name="login">
+    <input type="text" class="form-control" id="exampleInputEmail1" name="drive_licence">
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Пароль</label>

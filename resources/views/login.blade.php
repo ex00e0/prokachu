@@ -5,7 +5,7 @@
 @error('message')
 <script>alert("{{$message}}");</script>
 @enderror
-@error('login')
+@error('email')
 <div class="alert alert-danger">{{ $message }}</div>
 @enderror
 @error('password')

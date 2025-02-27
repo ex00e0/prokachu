@@ -26,10 +26,7 @@ class PageController extends Controller
         return view('reg');
     }
     public function login (Request $request) {
-                    $data = [
-                        'email'=>$request->email,
-                        'password'=>$request->password,
-                    ];
+                    $data = $request->all();
                     $rules = [
                         'email'=>'required',
                         'password'=>'required',
@@ -65,7 +62,7 @@ class PageController extends Controller
                         }
                        }
                        else{
-                            return back()->withErrors(['login'=>'Нет такого пользователя!'])->withInput();
+                            return back()->withErrors(['password'=>'Нет такого пользователя!'])->withInput();
                        }
                     }
     }
@@ -78,7 +75,7 @@ class PageController extends Controller
         $rules = [
             'password'=>'required|min:3|regex:/\d/',
             'fio'=>'required|regex:/^[А-Яа-яA-Za-z- ]+$/u',
-            'phone'=>'required|regex:/^\8\d{3}-\d{3}-\d{2}-\d{2}+$/u',
+            'phone'=>'required|regex:/^8\d{3}-\d{3}-\d{2}-\d{2}+$/u',
             'email'=>'required|email|unique:users',
             'drive_licence'=>'required',
         ];
@@ -112,17 +109,18 @@ class PageController extends Controller
                  
     }
     public function my_appls(){
-            $soon = Application::select('applications.*', 'car.name')->join('cars', 'cars.id', '=', 'applications.car_id')->where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
+            $soon = Application::select('applications.*', 'cars.name')->join('cars', 'cars.id', '=', 'applications.car_id')->where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
             $count = $soon->count();
             return view('my_appls', ['appls'=>$soon, 'count' => $count]);
     }
     public function send_appl (){
-        return view('send_appl');
+        $cars = Car::all();
+        return view('send_appl', ['cars'=>$cars]);
     }
     public function send_appl_db (Request $request) {
-$exist = Application:select('*')->where('date', $request->date)->where('car_id', $request->car_id)->get()->count();
+    $exist = Application::select('*')->where('date', $request->date)->where('car_id', $request->car_id)->where('status', '!=', 'отменена')->get()->count();
             if ($exist != 0) {
-                return redirect()->route('my_appls')->withErrors(['message_error'=>'Данный автомобиль на данную дату занят']);
+                return redirect()->back()->withErrors(['message_error'=>'Данный автомобиль на данную дату занят']);
             }
             else {
                 $appl = Application::create(['user_id'=>Auth::user()->id,
@@ -136,21 +134,21 @@ $exist = Application:select('*')->where('date', $request->date)->where('car_id',
     }
 
     public function all_appls () {
-        $soon = Application::select('applications.*', 'car.name')->join('cars', 'cars.id', '=', 'applications.car_id')->orderBy('created_at', 'DESC')->get();
+        $soon = Application::select('applications.*', 'cars.name', 'users.fio')->join('cars', 'cars.id', '=', 'applications.car_id')->join('users', 'users.id', '=', 'applications.user_id')->orderBy('created_at', 'DESC')->get();
        
             $count = $soon->count();
             return view('admin/all_appls', ['appls'=>$soon, 'count' => $count]);
     }
 
-    public function decline_status (Request $request) {
+    public function decline_status ($id) {
        
-        Application::where('id', $request->id)->update(['status'=>'отменена']);
+        Application::where('id', $id)->update(['status'=>'отменена']);
         return redirect()->route('all_appls')->withErrors(['message'=>'Вы отклонили заявку!']);
     }
 
-    public function accept_status (Request $request) {
+    public function accept_status ($id) {
        
-        Application::where('id', $request->id)->update(['status'=>'принята']);
+        Application::where('id', $id)->update(['status'=>'принята']);
         return redirect()->route('all_appls')->withErrors(['message'=>'Вы приняли заявку!']);
     }
 

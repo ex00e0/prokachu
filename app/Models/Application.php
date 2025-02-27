@@ -9,10 +9,8 @@ class Application extends Model
 {
     protected $fillable = [
         'user_id',
-        'tour_id',
-        'phone',
+        'car_id',
+        'date',
         'status',
-        'comment',
-        'admin_text',
     ];
 }

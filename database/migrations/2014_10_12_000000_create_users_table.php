@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('fio');
             $table->string('phone');
-            $table->string('email');
-            $table->string('login')->unique();
+            $table->string('email')->unique();
+            $table->string('drive_licence');
             $table->string('password');
             $table->enum('role', ['admin','user'])->default('user');
             $table->timestamps();

@@ -23,7 +23,8 @@ Route::post('/send_appl_db', [PageController::class, 'send_appl_db'])->name('sen
 
 Route::get('/all_appls', [PageController::class, 'all_appls'])->name('all_appls');
 
-Route::post('/change_status', [PageController::class, 'change_status'])->name('change_status');
+Route::get('/accept_status/{id}', [PageController::class, 'accept_status'])->name('accept_status');
+Route::get('/decline_status/{id}', [PageController::class, 'decline_status'])->name('decline_status');
 
 
 

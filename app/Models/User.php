@@ -21,7 +21,7 @@ class User extends Authenticatable
         'fio',
         'phone',
         'email',
-        'login',
+        'drive_licence',
         'password',
         'role'
     ];
